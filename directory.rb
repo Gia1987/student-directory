@@ -66,14 +66,28 @@ def print_header
 end
 
 def print(students)
-  puts 'Type "All" to see all the students, or a letter A..Z to see the names that starts with:'  
-  letter = gets.chomp
+  puts 'Type "All" to see all the students or a letter A..Z to see the names that starts with:'  
+  puts "Type 'cohort' to see the student grouped by own cohort:"
+  input = gets.chomp
   i = 0
   while i < students.count
+    # Students grouped by cohort
+    if input == "cohort"
+      student_by_cohort = {}
+      students.each do |student|
+        cohort = student[:cohort]
+        if student_by_cohort[cohort] == nil
+           student_by_cohort[cohort] = []
+        end
+        student_by_cohort[cohort].push(student[:name])
+      end
+      student_by_cohort.each {|key, value| puts "#{key} = " + value.join(", ")}
+      break
+    end
     # print names that starts with a particular letter
-    if "#{students[i][:name]}".start_with?(letter.upcase) && "#{students[i][:name]}".length < 12
+    if "#{students[i][:name]}".start_with?(input.upcase) && "#{students[i][:name]}".length < 12
       puts "#{(i + 1).to_s}.  #{students[i][:name]} (#{students[i][:cohort]} cohort), who loves #{students[i][:hobbies]}, comes from #{students[i][:origin]} and also is  #{students[i][:height]} cm tall.".center(150,"-")
-    elsif letter == "All"
+    elsif input == "All"
       puts "#{(i + 1).to_s}.  #{students[i][:name]} (#{students[i][:cohort]} cohort), who loves #{students[i][:hobbies]}, comes from #{students[i][:origin]} and also is  #{students[i][:height]} cm tall.".center(150,"-")
     end
     i += 1
