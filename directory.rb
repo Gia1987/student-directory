@@ -54,16 +54,18 @@ def print_header
 end
 
 def print(students)
-  puts 'Type "All" to see al the students, or a letter A..Z to see the names that starts with:'  
+  puts 'Type "All" to see all the students, or a letter A..Z to see the names that starts with:'  
   letter = gets.chomp
-  students.each_with_index { |student, i|
+  i = 0
+  while i < students.count
     # print names that starts with a particular letter
-    if "#{student[:name]}".start_with?(letter.upcase) && "#{student[:name]}".length < 12
-      puts (i + 1).to_s + ". #{student[:name]} (#{student[:cohort]} cohort)"
+    if "#{students[i][:name]}".start_with?(letter.upcase) && "#{students[i][:name]}".length < 12
+      puts (i + 1).to_s + ". #{students[i][:name]} (#{students[i][:cohort]} cohort)"
     elsif letter == "All"
-      puts (i + 1).to_s + ". #{student[:name]} (#{student[:cohort]} cohort)"
+      puts (i + 1).to_s + ". #{students[i][:name]} (#{student[i][:cohort]} cohort)"
     end
-  }
+    i += 1
+  end
 end
 
 def print_footer(names)
