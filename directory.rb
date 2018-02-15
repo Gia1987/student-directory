@@ -40,13 +40,18 @@ def input_students
   # while the name is not empty, repeat this code
   while !name.empty? do 
     # add the student hash to the array
+    puts "What cohort are you part of ?"
+    month = gets.chomp
+      if month == ""
+        month = "february" 
+      end
     puts "Add the hobbies"
     hobby = gets.chomp
     puts "Add country"
     country = gets.chomp
     puts "Add height (cm)"
     height = gets.chomp
-    students <<  {name: name, cohort: :november, hobbies: hobby, origin: country, height: height}
+    students <<  {name: name, cohort: month, hobbies: hobby, origin: country, height: height}
     puts "Now we have #{students.count} student"
     #get another name from the user
     name = gets.chomp
@@ -67,9 +72,9 @@ def print(students)
   while i < students.count
     # print names that starts with a particular letter
     if "#{students[i][:name]}".start_with?(letter.upcase) && "#{students[i][:name]}".length < 12
-      puts (i + 1).to_s + ". #{students[i][:name]} (#{students[i][:cohort]} cohort), who loves #{students[i][:hobbies]}, comes from #{students[i][:origin]} and also is  #{students[i][:height]} cm tall.".center(150,"-")
+      puts "#{(i + 1).to_s}.  #{students[i][:name]} (#{students[i][:cohort]} cohort), who loves #{students[i][:hobbies]}, comes from #{students[i][:origin]} and also is  #{students[i][:height]} cm tall.".center(150,"-")
     elsif letter == "All"
-      puts (i + 1).to_s + ". #{students[i][:name]} (#{students[i][:cohort]} cohort), who loves #{students[i][:hobbies]}, comes from #{students[i][:origin]} and also is  #{students[i][:height]} cm tall.".center(150,"-")
+      puts "#{(i + 1).to_s}.  #{students[i][:name]} (#{students[i][:cohort]} cohort), who loves #{students[i][:hobbies]}, comes from #{students[i][:origin]} and also is  #{students[i][:height]} cm tall.".center(150,"-")
     end
     i += 1
   end
