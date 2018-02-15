@@ -36,25 +36,25 @@ def input_students
   students = []
   #get the first name
   puts "Add the name of the student?"
-  name = gets.chomp
+  name = gets.chop
   # while the name is not empty, repeat this code
   while !name.empty? do 
     # add the student hash to the array
     puts "What cohort are you part of ?"
-    month = gets.chomp
+    month = gets.chop
       if month == ""
         month = "february" 
       end
     puts "Add the hobbies"
-    hobby = gets.chomp
+    hobby = gets.chop
     puts "Add country"
-    country = gets.chomp
+    country = gets.chop
     puts "Add height (cm)"
-    height = gets.chomp
+    height = gets.chop
     students <<  {name: name, cohort: month, hobbies: hobby, origin: country, height: height}
     puts "Now we have #{students.count} student"
     #get another name from the user
-    name = gets.chomp
+    name = gets.chop
   end
   #return the array of students
   students
@@ -68,7 +68,7 @@ end
 def print(students)
   puts 'Type "All" to see all the students or a letter A..Z to see the names that starts with:'  
   puts "Type 'cohort' to see the student grouped by own cohort:"
-  input = gets.chomp
+  input = gets.chop
   i = 0
   while i < students.count
     # Students grouped by cohort
@@ -81,7 +81,7 @@ def print(students)
         end
         student_by_cohort[cohort].push(student[:name])
       end
-      student_by_cohort.each {|key, value| puts "#{key} = " + value.join(", ")}
+      student_by_cohort.each {|key, value| puts "#{key} : " + value.join(", ")}
       break
     end
     # print names that starts with a particular letter
@@ -95,7 +95,11 @@ def print(students)
 end
 
 def print_footer(names)
- puts "Overall, we have #{names.count} great students" 
+  if names.count == 1
+    puts "Overall, we have #{names.count} student"
+  else
+    puts "Overall, we have #{names.count} great students" 
+  end
 end
 
 students = input_students
