@@ -67,9 +67,9 @@ def print(students)
   while i < students.count
     # print names that starts with a particular letter
     if "#{students[i][:name]}".start_with?(letter.upcase) && "#{students[i][:name]}".length < 12
-      puts (i + 1).to_s + ". #{students[i][:name]} (#{students[i][:cohort]} cohort), who loves #{students[i][:hobbies]}, comes from #{students[i][:origin]} and also is  #{students[i][:height]} cm tall."
+      puts (i + 1).to_s + ". #{students[i][:name]} (#{students[i][:cohort]} cohort), who loves #{students[i][:hobbies]}, comes from #{students[i][:origin]} and also is  #{students[i][:height]} cm tall.".center(150,"-")
     elsif letter == "All"
-      puts (i + 1).to_s + ". #{students[i][:name]} (#{student[i][:cohort]} cohort), who loves #{students[i][:hobbies]}, comes from #{students[i][:origin]} and also is  #{students[i][:height]} cm tall."
+      puts (i + 1).to_s + ". #{students[i][:name]} (#{students[i][:cohort]} cohort), who loves #{students[i][:hobbies]}, comes from #{students[i][:origin]} and also is  #{students[i][:height]} cm tall.".center(150,"-")
     end
     i += 1
   end
