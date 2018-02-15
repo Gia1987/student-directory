@@ -53,10 +53,14 @@ def print_header
   puts "-------------"
 end
 
-def print(students)
+def print(students, letter)
   i = 1
   students.each {|student|
-  puts i.to_s + ". #{student[:name]} (#{student[:cohort]} cohort)"
+    if  "#{student[:name]}".start_with?(letter.upcase)
+      puts i.to_s + ". #{student[:name]} (#{student[:cohort]} cohort)" # print names that just starts with a particular letter
+    elsif letter == "All"
+      puts i.to_s + ". #{student[:name]} (#{student[:cohort]} cohort)"
+    end
   i +=1
   }
 end
@@ -67,7 +71,9 @@ end
 
 students = input_students
 # nothing happens until we call the methods
+puts 'Type "All" to see al the students, or a letter A..Z to see just the names that starts with:'  
+letter = gets.chomp
 print_header
-print(students)
+print(students, letter)
 print_footer(students)
 
