@@ -30,6 +30,18 @@ def input_students
   end
 end
 
+def save_students
+  #open the file for writing
+  file = File.open("students.csv", "w")
+  #iterate over the array of students
+  @students.each do |student|
+    student_data = [student[:name], student[:cohort]]
+    csv_line = student_data.join(",")
+    file.puts csv_line
+  end
+  file.close
+end
+
 def print_students_list
   if !@students.empty?
     ask_for_input
@@ -68,6 +80,7 @@ def ask_for_input
   puts 'Type "All" to see all the students or a letter A..Z to see the names that starts with:'  
   puts "Type 'cohort' to see the student grouped by own cohort:"
 end
+
 def proccess(selection)
   case selection
     when "1"
@@ -76,6 +89,8 @@ def proccess(selection)
     when "2"
     #show the students
       show_students
+    when "3"
+      save_students
     when "9"
       exit #this will couse the program to terminate
     else
@@ -114,10 +129,11 @@ end
 def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
+  puts "3. Save the lidt to students.csv"
   puts "9. Exit" # 9 because we'll be adding more items  
 end
 
 interactive_menu
-@students = input_students
+
 
 
