@@ -62,6 +62,33 @@ def input_students
   students
 end
 
+def interactive_menu
+  students = []
+  loop do 
+    #1. print the menu and ask the user what to do
+    puts "1. Input the students"
+    puts "2. Show the students"
+    puts "9. Exit" # 9 because we'll be adding more items
+    #2. read the input and save it into a variable
+    selection = gets.chop
+    #3. do what the user has asked
+    case selection
+    when "1"
+      #input the students
+      students = input_students
+    when "2"
+      #show the students
+      print_header
+      print(students)
+      print_footer(students)
+    when "9"
+      exit #this will couse the program to terminate
+    else
+      puts " I don't know you meant, try again"
+    end
+  end
+end
+
 def print_header
   puts "The student of Villains Academy"
   puts "-------------"
@@ -106,6 +133,7 @@ def print_footer(names)
   end
 end
 
+interactive_menu
 students = input_students
 # nothing happens until we call the methods
 print_header
