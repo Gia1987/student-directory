@@ -1,6 +1,6 @@
 # student-directory
 
-the studen directory scripy allows you to manage the list of students enrolled at Villains Academy.
+the studen directory scripy allows you to manage the list of students enrolled at Villains Academy .
 
 ## How to use ##
 
