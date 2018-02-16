@@ -4,6 +4,6 @@ the studen directory scripy allows you to manage the list of students enrolled a
 
 ## How to use ##
 
----shell
+```shell
 ruby directory.rb
----
+```

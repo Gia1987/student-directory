@@ -35,8 +35,10 @@ def input_students
   #create an empty array
   students = []
   #get the first name
-  puts "Add the name of the student?"
   name = gets.chop
+  if name.empty?
+      puts "There is not any student on the list!"
+  end
   # while the name is not empty, repeat this code
   while !name.empty? do 
     # add the student hash to the array
@@ -66,31 +68,33 @@ def print_header
 end
 
 def print(students)
-  puts 'Type "All" to see all the students or a letter A..Z to see the names that starts with:'  
-  puts "Type 'cohort' to see the student grouped by own cohort:"
-  input = gets.chop
-  i = 0
-  while i < students.count
-    # Students grouped by cohort
-    if input == "cohort"
-      student_by_cohort = {}
-      students.each do |student|
-        cohort = student[:cohort]
-        if student_by_cohort[cohort] == nil
-           student_by_cohort[cohort] = []
+  if !students.empty?
+    puts 'Type "All" to see all the students or a letter A..Z to see the names that starts with:'  
+    puts "Type 'cohort' to see the student grouped by own cohort:"
+    input = gets.chop
+    i = 0
+    while i < students.count
+      # Students grouped by cohort
+      if input == "cohort"
+        student_by_cohort = {}
+        students.each do |student|
+          cohort = student[:cohort]
+          if student_by_cohort[cohort] == nil
+             student_by_cohort[cohort] = []
+          end
+          student_by_cohort[cohort].push(student[:name])
         end
-        student_by_cohort[cohort].push(student[:name])
+        student_by_cohort.each {|key, value| puts "#{key} : " + value.join(", ")}
+        break
       end
-      student_by_cohort.each {|key, value| puts "#{key} : " + value.join(", ")}
-      break
+      # print names that starts with a particular letter
+      if "#{students[i][:name]}".start_with?(input.upcase) && "#{students[i][:name]}".length < 12
+        puts "#{(i + 1).to_s}.  #{students[i][:name]} (#{students[i][:cohort]} cohort), who loves #{students[i][:hobbies]}, comes from #{students[i][:origin]} and also is  #{students[i][:height]} cm tall.".center(150,"-")
+      elsif input == "All"
+        puts "#{(i + 1).to_s}.  #{students[i][:name]} (#{students[i][:cohort]} cohort), who loves #{students[i][:hobbies]}, comes from #{students[i][:origin]} and also is  #{students[i][:height]} cm tall.".center(150,"-")
+      end
+      i += 1
     end
-    # print names that starts with a particular letter
-    if "#{students[i][:name]}".start_with?(input.upcase) && "#{students[i][:name]}".length < 12
-      puts "#{(i + 1).to_s}.  #{students[i][:name]} (#{students[i][:cohort]} cohort), who loves #{students[i][:hobbies]}, comes from #{students[i][:origin]} and also is  #{students[i][:height]} cm tall.".center(150,"-")
-    elsif input == "All"
-      puts "#{(i + 1).to_s}.  #{students[i][:name]} (#{students[i][:cohort]} cohort), who loves #{students[i][:hobbies]}, comes from #{students[i][:origin]} and also is  #{students[i][:height]} cm tall.".center(150,"-")
-    end
-    i += 1
   end
 end
 
