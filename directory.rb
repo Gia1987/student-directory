@@ -5,28 +5,28 @@ def input_students
   puts "to finish, just hit return twice"
   #create an empty array
   #get the first name
-  name = gets.chop
+  name = STDIN.gets.chomp
   if name.empty?
-      puts "There is not any student on the list!"
+    puts "There is not any student on the list!"
   end
   # while the name is not empty, repeat this code
   while !name.empty? do 
     # add the student hash to the array
     puts "What cohort are you part of ?"
-    month = gets.chop
-      if month == ""
-        month = "february" 
-      end
+    month = gets.chomp
+    if month == ""
+      month = "february" 
+    end
     puts "Add the hobbies"
-    hobby = gets.chop
+    hobby = gets.chomp
     puts "Add country"
-    country = gets.chop
+    country = gets.chomp
     puts "Add height (cm)"
-    height = gets.chop
+    height = gets.chomp
     @students <<  {name: name, cohort: month, hobbies: hobby, origin: country, height: height}
     puts "Now we have #{@students.count} " + (@students.count > 1 ? 'students' : 'student')
     #get another name from the user
-    name = gets.chop
+    name = STDIN.gets.chomp
   end
 end
 
@@ -42,10 +42,10 @@ def save_students
   file.close
 end
 
-def load_students
-  file = File.open("students.csv", "r")
+def load_students(filename = "students.csv")
+  file = File.open(filename, "r")
   file.readlines.each do |line|
-  name, cohort = line.chomp.split(',')
+    name, cohort = line.chomp.split(',')
     @students << {name: name, cohort: cohort.to_sym}
   end
   file.close
@@ -54,7 +54,7 @@ end
 def print_students_list
   if !@students.empty?
     ask_for_input
-    input = gets.chop
+    input = gets.chomp
     i = 0
     while i < @students.count
       # Students grouped by cohort
@@ -78,7 +78,7 @@ def grouped_by_cohorts
   @students.each do |student|
     cohort = student[:cohort]
     if student_by_cohort[cohort] == nil
-       student_by_cohort[cohort] = []
+      student_by_cohort[cohort] = []
     end
     student_by_cohort[cohort].push(student[:name])
   end
@@ -99,7 +99,7 @@ def proccess(selection)
     #show the students
       show_students
     when "3"
-      save_student
+      save_students
     when "4"
       load_students
     when "9"
@@ -113,7 +113,7 @@ def interactive_menu
   loop do 
     print_menu
     #2. read the input and save it into a variable
-    proccess(gets.chop)
+    proccess(STDIN.gets.chomp)
     #3. do what the user has asked
    end
 end
@@ -145,6 +145,19 @@ def print_menu
   puts "9. Exit" # 9 because we'll be adding more items  
 end
 
+def try_load_students
+  filename = ARGV.first# first argument from the command line
+  return if filename.nil? # get out of the method if it isn't given
+  if File.exists?(filename) # if it exists
+    load_students(filename)
+    puts "Loaded #{@students.count} from #{filename}"
+  else # if it doesn't exist
+    puts "Sorry, #{filename} doesn't exist."
+    exit # quit the program
+  end
+end
+
+try_load_students
 interactive_menu
 
 
