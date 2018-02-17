@@ -1,35 +1,37 @@
 @students = [] # an empty array accessible to all methods
-
+@withd = 50 
 def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
-  puts "3. Save the lidt to students.csv"
-  puts "4. Load list from students.csv"
+  puts "3. Save the list to students.csv"
+  puts "4. Load the list form students.csv"
   puts "9. Exit" # 9 because we'll be adding more items  
 end
 
 def interactive_menu
   loop do 
-    print_menu
-    #2. read the input and save it into a variable
-    proccess(STDIN.gets.chomp)
-    #3. do what the user has asked
+    print_menu 
+    proccess(STDIN.gets.chomp)  # read the input and save it into a variable
    end
 end
 
 def proccess(selection)
+  load_students 
   case selection
-    when "1"
-    #input the students
-      input_students
-    when "2"
-    #show the students
-      show_students
-    when "3"
+    when "1" 
+      puts "Adding students section"#input the students
+      input_students 
+    when "2" 
+      ask_for_input
+      show_students #show the students
+    when "3" 
+      puts "You have updated succefully the list"
       save_students
     when "4"
-      load_students
+      puts "You have loaded succefully the list"
+      load_students  #4. load students.cvs by default
     when "9"
+      puts "The program has been quit!"
       exit #this will couse the program to terminate
     else
       puts " I don't know you meant, try again"
@@ -37,32 +39,23 @@ def proccess(selection)
 end
 
 def input_students
-  puts "Please enter the names of the students"
-  puts "to finish, just hit return twice"
-  #create an empty array
-  #get the first name
-  name = STDIN.gets.chomp
+  puts "Please enter the names of the students, to finish, just hit return twice"
+  name = STDIN.gets.chomp  #get the first name
   if name.empty?
     puts "There is not any student on the list!"
   end
-  # while the name is not empty, repeat this code
-  while !name.empty? do 
-    # add the student hash to the array
-    puts "What cohort are you part of ?"
-    cohort = gets.chomp
-    if cohort == ""
-      cohort = "february" 
-    end
-    storage_students(name, cohort)
+  while !name.empty? do # while the name is not empty, repeat this code
+    storage_students(name)
     puts "Now we have #{@students.count} " + (@students.count > 1 ? 'students' : 'student')
-    #get another name from the user
-    name = STDIN.gets.chomp
+    puts "Please enter the name of another student :"
+    name = STDIN.gets.chomp  #get another name from the user
   end
 end
 
-def storage_students(name, cohort)
-  @students <<  {name: name, cohort: cohort.to_sym }
+def storage_students(name, cohort = :november)
+  @students <<  {name: name, cohort: cohort }
 end
+
 def show_students
   print_header
   print_students_list
@@ -70,31 +63,29 @@ def show_students
 end
 
 def print_header
-  puts "The student of Villains Academy"
-  puts "-------------"
+  puts "The student of Villains Academy".center(@withd)
+  puts "-------------".center(@withd)
 end
 
 def ask_for_input
   puts 'Type "All" to see all the students or a letter A..Z to see the names that starts with:'  
+  puts
   puts "Type 'cohort' to see the student grouped by own cohort:"
 end
 
 def print_students_list
   if !@students.empty?
-    ask_for_input
     input = gets.chomp
     i = 0
     while i < @students.count
-      # Students grouped by cohort
-      if input == "cohort"
+      if input == "cohort" # Students grouped by cohort
         grouped_by_cohorts
         break
       end
-      # print names that starts with a particular letter
-      if "#{@students[i][:name]}".start_with?(input.upcase)
-        puts "#{(i + 1).to_s}. #{@students[i][:name]} (#{@students[i][:cohort]} cohort)".center(120,)
+      if "#{@students[i][:name]}".start_with?(input.upcase) # print names that starts with a particular letter
+        puts "#{(i + 1).to_s}. #{@students[i][:name]} (#{@students[i][:cohort]} cohort)".center(@withd)
       elsif input == "All"
-        puts "#{(i + 1).to_s}. #{@students[i][:name]} (#{@students[i][:cohort]} cohort)".center(120,)
+        puts "#{(i + 1).to_s}. #{@students[i][:name]} (#{@students[i][:cohort]} cohort)".center(@withd)
       end
       i += 1
     end
@@ -119,10 +110,8 @@ def print_footer
 end
 
 def save_students
-  #open the file for writing
-  file = File.open("students.csv", "w")
-  #iterate over the array of students
-  @students.each do |student|
+  file = File.open("students.csv", "w") #open the file for writing
+  @students.each do |student|  #iterate over the array of students
     student_data = [student[:name], student[:cohort]]
     csv_line = student_data.join(",")
     file.puts csv_line
@@ -133,25 +122,27 @@ end
 def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
-    name, cohort = line.chomp.split(',')
-   storage_students(name, cohort)
+  name, cohort = line.chomp.split(',')
+   storage_students(name, cohort.to_sym)
   end
   file.close
 end
 
 def try_load_students
-  filename = ARGV.first# first argument from the command line
-  return if filename.nil? # get out of the method if it isn't given
+  filename = ARGV.first #first argument from the command line
+  if filename.nil?
+     filename = "students.csv"
+  end
   if File.exists?(filename) # if it exists
     load_students(filename)
-    puts "Loaded #{@students.count} from #{filename}"
+     puts "Loaded #{@students.count} from #{filename}"
   else # if it doesn't exist
     puts "Sorry, #{filename} doesn't exist."
     exit # quit the program
   end
 end
 
-try_load_students
+
 interactive_menu
 
 
