@@ -1,5 +1,7 @@
-9
+
 @students = [] # an empty array accessible to all methods
+
+require 'csv'
 
 @withd = 120 
 
@@ -93,11 +95,10 @@ end
 def save_students
   puts "Where would you like save your students list?"
   students_list_name = gets.chomp
-  File.open("#{students_list_name}.csv", "w") do |file| #open the file for writing
+  CSV.open("#{students_list_name}.csv", "wb") do |csv| #open the file for writing
     @students.each do |student|  #iterate over the array of students
       student_data = [student[:name], student[:cohort]]
-      csv_line = student_data.join(",")
-      file.puts csv_line
+      csv <<  student_data
     end
     puts "The list has been updated! "
   end
@@ -106,19 +107,12 @@ end
 def load_students
 	puts "Which file do you want to retrieve the data from?"
 	filename = gets.chomp
-	if File.exists?(filename)  # if it exists
-	  File.open(filename, "r") do |file|
-	    file.readlines.each do |line|
-	      name, cohort = line.chomp.split(', ')
-	 	    storage_student(name)
-	    end
-	  puts "Loaded #{@students.count} from #{filename}"
-	 	puts "Students data base succesfully retrieved"
-	 	end
-  else # if it doesn't exist
-    puts "Sorry, #{filename} doesn't exist."
-    exit # quit the program
-  end
+	CSV.foreach(filename, "r") do |row|
+	  name, cohort = row
+	 	storage_student(name, cohort)
+	end
+	puts "Loaded #{@students.count} from #{filename}"
+	puts "Students data base succesfully retrieved"
 end
 
 def try_load_students
@@ -126,13 +120,8 @@ def try_load_students
   if filename.nil?
 	 return
 	end
-	if File.exists?(filename) # if it exists
-    load_students(filename)
-     puts "Loaded #{@students.count} from #{filename}"
-  else # if it doesn't exist
-    puts "Sorry, #{filename} doesn't exist."
-    exit # quit the program
-  end
+  load_students(filename)
+  puts "Loaded #{@students.count} from #{filename}"
 end
 
 def cohort
