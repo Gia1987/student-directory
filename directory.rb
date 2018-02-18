@@ -1,6 +1,7 @@
+9
 @students = [] # an empty array accessible to all methods
 
-@withd = 50 
+@withd = 120 
 
 
 def print_menu
@@ -26,10 +27,8 @@ def proccess(selection)
     when "2" 
       show_students #show the students
     when "3" 
-      puts "You have updated succefully the list"
       save_students
     when "4"
-      puts "You have loaded succefully the list"
       load_students  #4. load students.cvs by default
     when "9"
       puts "The program has been quit!"
@@ -61,7 +60,7 @@ def show_students
   print_header
   print_students_list
   print_footer
-  cohort
+  #cohort
 end
 
 def print_header
@@ -94,12 +93,13 @@ end
 def save_students
   puts "Where would you like save your students list?"
   students_list_name = gets.chomp
-  file = File.open("#{students_list_name}.csv", "w") do |file| #open the file for writing
+  File.open("#{students_list_name}.csv", "w") do |file| #open the file for writing
     @students.each do |student|  #iterate over the array of students
       student_data = [student[:name], student[:cohort]]
       csv_line = student_data.join(",")
       file.puts csv_line
     end
+    puts "The list has been updated! "
   end
 end
 
@@ -107,10 +107,10 @@ def load_students
 	puts "Which file do you want to retrieve the data from?"
 	filename = gets.chomp
 	if File.exists?(filename)  # if it exists
-	  file = File.open(filename, "r") do |file|
+	  File.open(filename, "r") do |file|
 	    file.readlines.each do |line|
 	      name, cohort = line.chomp.split(', ')
-	 	    storage_student(name, cohort)
+	 	    storage_student(name)
 	    end
 	  puts "Loaded #{@students.count} from #{filename}"
 	 	puts "Students data base succesfully retrieved"
