@@ -78,7 +78,7 @@ def print_students_list
 	letter = gets.chomp
 	i = 0
 	while i < @students.length do
-		if "#{@students[i][:name]}".start_with?(letter.upcase) and "#{@students[i][:name]}".length < 12
+	  if "#{@students[i][:name]}".start_with?(letter.upcase) and "#{@students[i][:name]}".length < 12
   	  puts "#{(i + 1)}. #{@students[i][:name]} (#{@students[i][:cohort]} cohort)".center(@withd)
 		elsif letter == "All"
 		  puts "#{(i + 1)}. #{@students[i][:name]} (#{@students[i][:cohort]} cohort)".center(@withd)
@@ -94,27 +94,27 @@ end
 def save_students
   puts "Where would you like save your students list?"
   students_list_name = gets.chomp
-  file = File.open("#{students_list_name}.csv", "w") #open the file for writing
-  @students.each do |student|  #iterate over the array of students
-    student_data = [student[:name], student[:cohort]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
+  file = File.open("#{students_list_name}.csv", "w") do |file| #open the file for writing
+    @students.each do |student|  #iterate over the array of students
+      student_data = [student[:name], student[:cohort]]
+      csv_line = student_data.join(",")
+      file.puts csv_line
+    end
   end
-  file.close
 end
 
 def load_students
 	puts "Which file do you want to retrieve the data from?"
 	filename = gets.chomp
-	if File.exists?(filename) # if it exists
-	  file = File.open(filename, "r")
-	  file.readlines.each do |line|
-	    name, cohort = line.chomp.split(', ')
-	 	  storage_student(name, cohort)
-	  end
+	if File.exists?(filename)  # if it exists
+	  file = File.open(filename, "r") do |file|
+	    file.readlines.each do |line|
+	      name, cohort = line.chomp.split(', ')
+	 	    storage_student(name, cohort)
+	    end
 	  puts "Loaded #{@students.count} from #{filename}"
-	  file.close
 	 	puts "Students data base succesfully retrieved"
+	 	end
   else # if it doesn't exist
     puts "Sorry, #{filename} doesn't exist."
     exit # quit the program
@@ -124,7 +124,7 @@ end
 def try_load_students
   filename = ARGV.first # first argument from the command line
   if filename.nil?
-		return
+	 return
 	end
 	if File.exists?(filename) # if it exists
     load_students(filename)
@@ -138,7 +138,7 @@ end
 def cohort
   if @students == nil
 	  return
-	end
+  end
   cohort = {}
   @students.each do |x|
     cohorts = x[:cohort]
